@@ -66,6 +66,8 @@ export async function scrapeClearance(req: TypedRequest, res: Response) {
 
         page.setDefaultTimeout(data.timeout ?? 60_000);
 
+        const sessionPromise = getClearance(page, browser, data, browserLogger);
+
         if (data.method === "GET") {
             await page.goto(data.url, { waitUntil: "networkidle2" });
         } else if (data.method === "POST") {
@@ -84,7 +86,7 @@ export async function scrapeClearance(req: TypedRequest, res: Response) {
             );
         }
 
-        const session = await getClearance(page, browser, data, browserLogger);
+        const session = await sessionPromise;
 
         browserLogger.info("Successfully obtained clearance");
 
