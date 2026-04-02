@@ -27,15 +27,14 @@ RUN apt-get update && apt-get install -y \
     xvfb \
     && rm -rf /var/lib/apt/lists/*
 
-# Download and install Chrome
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
+# Download and install Chromium (works on amd64 + arm64)
+RUN echo "deb http://deb.debian.org/debian-security bookworm-security main" >> /etc/apt/sources.list \
     && apt-get update \
-    && apt-get install -y google-chrome-stable \
+    && apt-get install -y chromium \
     && rm -rf /var/lib/apt/lists/*
 
 # Set Chrome path
-ENV CHROME_BIN=/usr/bin/google-chrome
+ENV CHROME_PATH=/usr/bin/chromium
 
 # Install pnpm globally
 RUN npm install -g pnpm
